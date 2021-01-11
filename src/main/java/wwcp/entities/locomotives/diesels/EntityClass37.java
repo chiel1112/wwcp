@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.entities.EntityTrainCore;
-import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.URIRegistry;
 import ebf.tim.utility.RailUtility;
 import fexcraft.tmt.slim.ModelBase;
@@ -16,8 +15,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import wwcp.models.bogies.Class37Bogie;
-import wwcp.models.locomotives.Class37;
+import wwcp.entities.EntityDataSets.Transport;
+import wwcp.entities.WWCPTransport;
+import wwcp.models.bogies.EUBogies.Class37Bogie;
+import wwcp.models.locomotives.diesels.Class37;
 import wwcp.worldwidecontentpack;
 
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.UUID;
      */
     public class EntityClass37 extends EntityTrainCore {
 
-        public static final Item thisItem = new ItemTransport(new EntityClass37(null), worldwidecontentpack.MODID,worldwidecontentpack.United_Kingdom);
+        public static final Item thisItem = new WWCPTransport(new EntityClass37(null), worldwidecontentpack.MODID,worldwidecontentpack.United_Kingdom);
 
         /**
          * these basic constructors only need to have their names changed to that of this class, that is assuming your editor doesn't automatically do that.
@@ -44,36 +45,53 @@ import java.util.UUID;
         }
 
         @Override
-        public String transportName(){return "Class 37";}
+        public String transportName() { return Transport.Class37().name; }
+
         @Override
-        public String transportcountry(){return "United Kingdom";}
+        public String transportcountry() { return Transport.Class37().country; }
+
         @Override
-        public String transportYear(){return "1960-1965";}
+        public String transportYear() { return Transport.Class37().year; }
+
         @Override
         public String transportFuelType() {
-            return "Diesel-electric";
+            return Transport.Class37().fuel;
         }
         @Override
-        public boolean isFictional(){return false;}
+        public boolean isFictional() {
+            return Transport.Class37().fictional;
+        }
         @Override
-        public float weightKg() { return 111765; }
+        public float transportTractiveEffort() {
+            return Transport.Class37().tractive_effort;
+        }
         @Override
-        public float transportTractiveEffort(){return 55500;}
+        public float transportMetricHorsePower() {
+            return Transport.Class37().metric_horsepower;
+        }
         @Override
-        public float transportMetricHorsePower(){return 1750;}
-        @Override
-        public float transportTopSpeed(){return 140f;}
-        @Override
-        public int getInventoryRows(){return 1;}
+        public float weightKg() {
+            return  Transport.Class37().weightinKGs;
+        }
+
+        public boolean isReinforced() {
+            return Transport.Class37().reinforced;
+        }
+
         @Override
         public String[] additionalItemText() {
-            return new String[]{RailUtility.translate("wwcp.era") + " III-IV",
-                    RailUtility.translate("wwcp.nick") + " Tractor"};
+            {return new String[]{RailUtility.translate(Transport.Class37().additionalTextTitle) + Transport.Class37().additionalText,
+                    RailUtility.translate(Transport.Class37().additionalTextTitle2) + Transport.Class37().additionalText2};}
         }
+
+        @Override
+        public float transportTopSpeed(){return accelerator<0? Transport.Class37().backTopSpeed: Transport.Class37().topSpeed;}
         @Override
         public void registerSkins(){
             SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/Class37/C1.png","textures/bogies/Class37Bogie.png",
-                    "BR Livery", "Standard commisioned British Rail livery");
+                    "BR Livery", "Standard commissioned British Rail livery");
+            SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/Class37/C2.png","textures/bogies/Class37Bogie.png",
+                    "EWS Livery", "Standard commissioned EWS livery");
         }
 
         /**
@@ -95,7 +113,7 @@ import java.util.UUID;
 
         @Override
         public float[][] bogieModelOffsets() {
-            return new float[][]{{2.9f,0.12f,0},{-2.9f,0.12f,0}};
+            return new float[][]{{2.9f,-0.05f,0},{-2.9f,-0.05f,0}};
         }
 
         @Override
@@ -169,11 +187,8 @@ import java.util.UUID;
 
         @Override
         public float[][] modelOffsets() {
-            return new float[][]{{-0.05f,-0.15F,0.F}};}
-
-        @Override
-        public boolean isReinforced(){return true;}
-
+            return new float[][]{{-0.05f,0.05F,0.F}};}
+            
         /**
          * <h2>Fluid Tank Capacity</h2>
          */

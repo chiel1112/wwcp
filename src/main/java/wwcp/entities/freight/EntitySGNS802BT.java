@@ -3,7 +3,6 @@ package wwcp.entities.freight;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.entities.GenericRailTransport;
-import ebf.tim.items.ItemTransport;
 import ebf.tim.utility.RailUtility;
 import fexcraft.tmt.slim.ModelBase;
 import net.minecraft.init.Blocks;
@@ -11,8 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import wwcp.entities.EntityDataSets.Transport;
+import wwcp.entities.WWCPTransport;
+import wwcp.models.bogies.EUBogies.SGNSSBogie;
 import wwcp.models.freight.SGNS802BT;
-import wwcp.models.bogies.SGNSBogie;
 import wwcp.worldwidecontentpack;
 
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class EntitySGNS802BT extends GenericRailTransport {
 
     public static final String[] itemDescription = new String[]{"§7" + StatCollector.translateToLocal("menu.item.weight") + ": 2" + StatCollector.translateToLocal("menu.item.tons"), "§7" + StatCollector.translateToLocal("menu.item.sizeof") + ": 27" + StatCollector.translateToLocal("menu.item.slots")};
 
-    public static final Item thisItem = new ItemTransport(new EntitySGNS802BT((World)null), worldwidecontentpack.MODID, worldwidecontentpack.European);
+    public static final Item thisItem = new WWCPTransport(new EntitySGNS802BT((World)null), worldwidecontentpack.MODID, worldwidecontentpack.European);
 
     public EntitySGNS802BT(UUID owner, World world, double xPos, double yPos, double zPos) {
         super(owner, world, xPos, yPos, zPos);
@@ -38,7 +39,7 @@ public class EntitySGNS802BT extends GenericRailTransport {
 
     @Override
     public ModelBase[] bogieModels() {
-        return new ModelBase[]{new SGNSBogie()};
+        return new ModelBase[]{new SGNSSBogie()};
     }
 
     public float[] bogieLengthFromCenter() {
@@ -55,53 +56,20 @@ public class EntitySGNS802BT extends GenericRailTransport {
     }
 
     public void registerSkins() {
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S1.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S1.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 1", "Container loads variant 1");
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S2.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S2.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 2", "Container loads variant 2");
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S3.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S3.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 3", "Container loads variant 3");
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S4.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S4.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 4", "Container loads variant 4");
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S5.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S5.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 5", "Container loads variant 5");
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S6.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S6.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 6", "Container loads variant 6");
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/SGNS80/S7.png", "textures/bogies/SGNSSBogie.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/SGNS80/S7.png", "textures/bogies/SGNSSBogie.png",
                 "Variant 7", "Container loads variant 7");
-    }
-
-    public boolean isReinforced() {
-        return false;
-    }
-
-    public int[] getTankCapacity() {
-        return null;
-    }
-
-
-    public float weightKg() {
-        return 1814.3F;
-    }
-
-    public ItemStack[] getRecipie() {
-        return new ItemStack[]{RailUtility.DefineStack(Blocks.iron_ore, 1), null, null, null, null, null, null, null, null};
-    }
-
-    public String transportName() {
-        return "SGNSS 80 Load 2";
-    }
-
-    public String transportcountry() {
-        return "Europe";
-    }
-
-    public String transportYear() {
-        return "1950-now";
-    }
-
-    public float transportTopSpeed() {
-        return 0.0F;
     }
 
     @Override
@@ -109,28 +77,41 @@ public class EntitySGNS802BT extends GenericRailTransport {
         return null;
     }
 
+    public boolean isReinforced() {
+        return Transport.Sggnss80Load2().reinforced;
+    }
+
+    public float weightKg() {
+        return Transport.Sggnss80Load2().weightinKGs;
+    }
+
+    public ItemStack[] getRecipie() {
+        return new ItemStack[]{RailUtility.DefineStack(Blocks.iron_ore, 1), null, null, null, null, null, null, null, null};
+    }
+
+    public String transportName() {
+        return Transport.Sggnss80Load2().name;
+    }
+
+    public String transportcountry() { return Transport.Sggnss80Load2().country; }
+
+    public String transportYear() { return Transport.Sggnss80Load2().year; }
+
+    public float transportTopSpeed() {
+        return Transport.Sggnss80Load2().topSpeed;
+    }
+
     public boolean isFictional() {
-        return false;
+        return Transport.Sggnss80Load2().fictional;
     }
 
-    public float transportTractiveEffort() {
-        return 0.0F;
-    }
-
-    public float transportMetricHorsePower() {
-        return 0.0F;
-    }
-
+    @Override
     public String[] additionalItemText() {
-        return null;
+        {return new String[]{RailUtility.translate(Transport.Sggnss80Load2().additionalTextTitle) + Transport.Sggnss80Load2().additionalText,
+                RailUtility.translate(Transport.Sggnss80Load2().additionalTextTitle2) + Transport.Sggnss80Load2().additionalText2};}
     }
-
-    public float getMaxFuel() {
-        return 0.0F;
-    }
-
     public int getInventoryRows() {
-        return 3;
+        return Transport.Sggnss80Load2().rows;
     }
 
     public TrainsInMotion.transportTypes getType() {

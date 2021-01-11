@@ -1,41 +1,41 @@
 package wwcp.entities.locomotives.diesels;
-//This is a documentation class for copy pasting into a Diesel train class.
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.entities.EntityTrainCore;
-import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.URIRegistry;
 import ebf.tim.utility.RailUtility;
 import fexcraft.tmt.slim.ModelBase;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import wwcp.models.bogies.MZClassBogie;
-import wwcp.models.locomotives.MZII;
+import wwcp.entities.EntityDataSets.Transport;
+import wwcp.entities.WWCPTransport;
+import wwcp.models.bogies.EUBogies.MzBogie;
+import wwcp.models.locomotives.diesels.DSBMzI;
 import wwcp.worldwidecontentpack;
 
-import java.util.List;
 import java.util.UUID;
 
-/**
- * ETERNAL NOTE: anything that applies to GenericRailTransport also applies to EntityTrain core.
- */
+
+// XXXX -> Entity Name
+// MZI -> Data for SuperStat
+// ZZZZ -> Country for tab
+// QQQQ -> Bogies
+
 public class EntityMZClassOne extends EntityTrainCore {
 
-    public static final Item thisItem = new ItemTransport(new EntityMZClassOne(null), worldwidecontentpack.MODID,worldwidecontentpack.United_Kingdom);
+    public static final Item thisItem = new WWCPTransport(new wwcp.entities.locomotives.diesels.EntityMZClassOne(null), worldwidecontentpack.MODID,worldwidecontentpack.European);
 
     /**
      * these basic constructors only need to have their names changed to that of this class, that is assuming your editor doesn't automatically do that.
      * Be sure the one that takes more than a world is always first, unless you wanna compensate for that in the item declaration.
      * @see EntityTrainCore
      */
-
     public EntityMZClassOne(UUID owner, World world, double xPos, double yPos, double zPos) {
         super(owner, world, xPos, yPos, zPos);
     }
@@ -44,85 +44,86 @@ public class EntityMZClassOne extends EntityTrainCore {
     }
 
     @Override
-    public String transportName(){return "MZ Class I";}
+    public String transportName() { return Transport.MZI().name; }
+
     @Override
-    public String transportcountry(){return "Denmark";}
+    public String transportcountry() { return Transport.MZI().country; }
+
     @Override
-    public String transportYear(){return "1960-1965";}
+    public String transportYear() { return Transport.MZI().year; }
+
     @Override
     public String transportFuelType() {
-        return "Diesel-electric";
+        return Transport.MZI().fuel;
     }
     @Override
-    public boolean isFictional(){return false;}
+    public boolean isFictional() {
+        return Transport.MZI().fictional;
+    }
     @Override
-    public float weightKg() { return 111765; }
+    public float transportTractiveEffort() {
+        return Transport.MZI().tractive_effort;
+    }
     @Override
-    public float transportTractiveEffort(){return 55500;}
+    public float transportMetricHorsePower() {
+        return Transport.MZI().metric_horsepower;
+    }
     @Override
-    public float transportMetricHorsePower(){return 1750;}
-    @Override
-    public float transportTopSpeed(){return 140f;}
-    @Override
-    public int getInventoryRows(){return 1;}
+    public float weightKg() {
+        return  Transport.MZI().weightinKGs;
+    }
+
+    public boolean isReinforced() {
+        return Transport.MZI().reinforced;
+    }
+
     @Override
     public String[] additionalItemText() {
-        return new String[]{RailUtility.translate("wwcp.era") + " III-IV",
-                RailUtility.translate("wwcp.nick") + " Tractor"};
+        {return new String[]{RailUtility.translate(Transport.MZI().additionalTextTitle) + Transport.MZI().additionalText,
+                RailUtility.translate(Transport.MZI().additionalTextTitle2) + Transport.MZI().additionalText2};}
     }
+
+    @Override
+    public float transportTopSpeed(){return accelerator<0? Transport.MZI().backTopSpeed: Transport.MZI().topSpeed;}
+
     @Override
     public void registerSkins(){
-        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MZClassI-IIRed.png","textures/bogies/MZClassBogie.png",
-                "BR Livery", "Standard commisioned British Rail livery");
-    }
-
-    /**
-     * ETERNAL NOTE: though these two methods are marked depreciated, they will be supported long-run
-     * the replacement method is
-     *     public Bogie[] bogies()
-     *     a new bogie is defined like
-     *         new Bogie(ModelBase MODEL, float[] OFFSET)
-     *         the reason for this new method is so bogies can have their subBogie[] variable set
-     *         to add bogies on your bogie that have similar independent rotation-
-     *         to the host bogie, as the host bogie has to the train.
-     *
-     * @return
-     */
-    @Override
-    public ModelBase[] bogieModels() {
-        return new ModelBase[]{new MZClassBogie()};
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MzIDSB1990-2020s.png", "textures/bogies/Mz_Bogey.png",
+                "DSB Red and Black Livery", "Standard Red and Black livery for the DSB");
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MzIDSB1980-1990s.png", "textures/bogies/Mz_Bogey.png",
+                "DSB Red and Black Livery 1980", "Standard Red and Black livery for the DSB before the cornered windows were blinded in 1990");
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MzIRDK.png", "textures/bogies/Mz_Bogey.png",
+                "Railion Livery", "After DSB Gods (DSB Freight/Cargo) was sold to Railion in 2001, all DSB markers were removed from the Locomotives");
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MzIWWCP.png", "textures/bogies/Mz_Bogey.png",
+                "WWCP Commercial Livery", "Standard Purple Blue livery for WWCP");
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/3TTMZ1407.png", "textures/bogies/Mz_Bogey.png",
+                "TTMZ Skin", "Standard Purple Blue livery for WWCP");
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MzI/TGOJTMZ1410.png", "textures/bogies/Mz_Bogey.png",
+                "TGOJ TMZ 1410", "STT sold number 1410 to TGOJ in 2005, the skin clivery survived over Green Cargo and till NRFAB,until they sold it to BaneNor, and it was reverted back into classic DSB Red/Black");
+        SkinRegistry.addSkin(this.getClass(),worldwidecontentpack.MODID, "textures/locomotive/Diesel/MZ/MzI/3TTMZ1409.png", "textures/bogies/Mz_Bogey.png",
+                "IGAB livery from when they bough Mz 1409 from DSB, it carried over to 3T or Three T AB", "Standard Purple Blue livery for WWCP");
     }
 
     @Override
-    public float[][] bogieModelOffsets() {
-        return new float[][]{{2.9f,0.12f,0},{-2.9f,0.12f,0}};
+    public String getDefaultSkin() {
+        return "wwcp:DSB Red and Black Livery";
     }
 
     @Override
-    public float[] bogieLengthFromCenter(){return new float[]{3f,-3f};}
+    public float getMaxFuel(){return 20;}
 
-    @Override
-    public List<TrainsInMotion.transportTypes> getTypes() {
-        return TrainsInMotion.transportTypes.PASSENGER.singleton();
+
+    public TrainsInMotion.transportTypes getType() {return TrainsInMotion.transportTypes.ELECTRIC;
     }
 
-    //in what units is this?
-    //ETERNAL NOTE: millibuckets, so 1000 is a bucket.
-    @Override
-    public float getMaxFuel(){return 1;}
-
-    @Override
-    public float[][] getRiderOffsets(){return new float[][]{{1.3f,1.2f, 0f}};}
 
 
     @Override
-    public boolean shouldRiderSit(){
-        return false;
-    }
+    public float[][] getRiderOffsets(){return new float[][]{{-4.25f,1.55f, -0.25f}};}
 
     @Override
     public float[] getHitboxSize() {
-        return new float[]{9.5f,2f,1.5f};
+        return new float[]{10.23f,2.2f,1.5f};
     }
 
     public ItemStack[] getRecipie() {
@@ -134,33 +135,20 @@ public class EntityMZClassOne extends EntityTrainCore {
     }
 
     /**
-     * <h2>Smoke offset</h2>
-     * @return defines the array of positions in blocks for smoke.
-     * the first number in the position defines the X/Z axis, negative values are towards the front of the train.
-     * the second number defines the Y position, 0 is the rails, higher values are towards the sky.
-     * the third number defines left to right, negative values are towards the right.
-     * the forth number defines the grayscale color from 255 (white) to 0 (black)
-     * the 5th number is for density, there's no min/max but larger numbers will create more lag.
+     * <h2>Hitbox offsets</h2>
+     * @return defines the positions for the hitboxes in blocks. 0 being the center, negative values being towards the front. the first and last values define the positions of the couplers
      */
 
-    //Is this three different smoke offset effects?
-    public float[][] getSmokeOffset(){return new float[][]{{-1,0,0.5f,0xB2B2B2,30},{-1,0,-0.5f,0xB2B2B2,30},{-1.4f,2f,0,0x3C3C3C,500}};}
+    @Override
+    public float[][] bogieModelOffsets(){return new float[][]{{3f,0.05f,0},{-3f,0.05f,0}};
+    }
+    @Override
+    public ModelBase[] bogieModels() {return new ModelBase[]{new MzBogie()}; }
 
-    /**
-     * ETERNAL NOTE
-     * getSmokeOffset has been changed to
-     *     public int[] getParticleData(int id)
-     *     - the id parameter defined the id of the particle defined in the model using methods like
-     *     StaticModelAnimator.tagSmoke(int ID)
-     *     - the return int[] value defines density, scale in percentage, and color in RGB or RGBA hex.
-     *
-     *     an example:
-     *     public int[] getParticleData(int id){
-     *         if(id==TARGET){return new int[]{DENSITY,SCALE,0xRRGGBBAA};}
-     *         else {return super.getParticleData(id);}
-     *     }
-     */
-
+    @Override
+    public float[] bogieLengthFromCenter() {
+        return new float[]{3, -3};
+    }
 
     @Override
     public float getRenderScale() {
@@ -169,99 +157,65 @@ public class EntityMZClassOne extends EntityTrainCore {
 
     @Override
     public float[][] modelOffsets() {
-        return new float[][]{{-0.05f,-0.15F,0.F}};}
+        return new float[][]{{0.03f,-0.05F,0.F}};}
 
+    /**
+     * <h2>rider sit or stand</h2>
+     * @return true if the rider(s) should be sitting, false if the rider should be standing.
+     */
     @Override
-    public boolean isReinforced(){return true;}
+    public boolean shouldRiderSit(){
+        return true;
+    }
+    /**
+     * <h2>reinforced transport</h2>
+     * this returns if this specific entity is reinforced (explosion proof and damage resistant).
+     * since this is a function it can b
+     * te conditional as well, for instance if it has a specific skin.
+     */
 
     /**
      * <h2>Fluid Tank Capacity</h2>
      */
-
-    //once more what do the numbers mean
-    //ETERNAL NOTE 1000 is a bucket, each number represents a new tank.
-    @Override
+    //@Override
     public int[] getTankCapacity(){return new int[]{9161, 800};}
-    //once more idem dito
-    //ETERNAL NOTE RF capacity is being moved to a fluid tank, one redstone has the value of 250.
-    //as of writing this the RF tank uses water, but later there will be a redstone dust fluid for it
 
-    public int getRFCapacity() {
-        return 1110000;
-    }
-
-    /**
-     * <h2>fluid filter</h2>
-     * defines what fluids can and can't be stored in the tank.
-     * for instance if you have a wooden tanker car, you can deny fluids that are fire sources (like lava).
-     */
-
-    //eeeh what
-
-    public String[] getTankFilters(int tank){
-        switch (tank){
-            case 0:{
-                return new String[]{FluidRegistry.WATER.getName()};
-            }
-            default:{
-                return new String[]{FluidRegistry.LAVA.getName()};
-            }
-        }
-    }
-
-    /**
-     * ETERNAL NOTE: tank filters is being moved to a double array
-     * the new method is
-     *     public String[][] getTankFilters()
-     *     for example:
-     *     public String[] getTankFilters(int tank){
-     *         return new String[][]{{TankOneFilterOne,TankOneFilterTwo}, {TankTwoFilterOne}};
-     *     }
-     *     filter strings may be the direct name of the fluid, or part of the name, for example
-     *     FluidRegistry.WATER.getName() for the entire name, or "water" for part of it.
-     *     mind you part names may have conflicts, "water" for example will accept the fluid registry water and
-     *     hot spring water from BoP and Distilled Water from IC2 as all three names contain "water".
-     *
-     */
-
-    //eeeh what
-    //ETERNAL NOTE this returns if the inventory slot will accept an item.
-    // slot 400 is the fuel slot. 401 is the second fuel slot if there is one. 402 is the third etc.
-    // custom slots with their own slot numbers can be defined in public void initInventorySlots()
-    // NOTE 2: when overriding initInventorySlots() be sure to call the super method, also always use numbers over 400
-    // to prevent conflicts with other inventory functionality.
-    // later on i'll need to implement an easier system for custom inventory slots.
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack){
         switch (slot){
-            case 400:{return TileEntityFurnace.getItemBurnTime(stack)>0;}
-            case 401:{return FluidContainerRegistry.getFluidForFilledItem(stack)!=null && canFill(null, FluidContainerRegistry.getFluidForFilledItem(stack).getFluid());}
+            case 400:{return stack!=null && stack.getItem() ==Items.redstone;}
             default:{return true;}
-        }
-    }
+        }}
 
     /**
      * <h2>fuel management</h2>
      * defines how the transport manages burnHeat, both in consuming items, and in managing the burnHeat.
      */
-    @Override
-    public void manageFuel(){
-        fuelHandler.manageElectric(this);
+
+    public void manageFuel() {
+        this.fuelHandler.manageElectric(this);
     }
 
-
+    /**
+     * <h2>pre-assigned values</h2>
+     * These return values are defined from the top of the class.
+     * These should only need modification for advanced users, and even that's a stretch.
+     */
     public Item getItem(){
         return thisItem;
     }
 
-    public ModelBase[] getModel(){return new ModelBase[]{new MZII()};}
+    public ModelBase[] getModel(){return new ModelBase[]{new DSBMzI()};}
 
-    //For sound effects
+    /**
+     * <h2>sets the resource location for sounds, like horn and the sound made for the engine running</h2>
+     */
     @SideOnly(Side.CLIENT)
     @Override
-    public ResourceLocation getHorn(){return URIRegistry.SOUND_HORN.getResource("h080brigadelok.ogg");}
+    public ResourceLocation getHorn(){return URIRegistry.SOUND_HORN.getResource("xxxxxxx.ogg");}
     @SideOnly(Side.CLIENT)
     @Override
-    public ResourceLocation getRunningSound(){return URIRegistry.SOUND_RUNNING.getResource("r080brigadelok.ogg");}
+    public ResourceLocation getRunningSound(){return URIRegistry.SOUND_RUNNING.getResource("xxxxxxx.ogg");}
 }
+
 

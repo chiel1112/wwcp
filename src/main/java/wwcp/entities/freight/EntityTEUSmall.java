@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import wwcp.entities.WWCPTransport;
 import wwcp.models.freight.TeuSmallContainer;
 import wwcp.worldwidecontentpack;
 
@@ -20,7 +21,7 @@ public class EntityTEUSmall extends GenericRailTransport {
 
     public static final String[] itemDescription = new String[]{"§7" + StatCollector.translateToLocal("menu.item.weight") + ": 2" + StatCollector.translateToLocal("menu.item.tons"), "§7" + StatCollector.translateToLocal("menu.item.sizeof") + ": 27" + StatCollector.translateToLocal("menu.item.slots")};
 
-    public static final Item thisItem = new ItemTransport(new EntityTEUSmall((World)null), worldwidecontentpack.MODID, worldwidecontentpack.European);
+    public static final Item thisItem = new WWCPTransport(new EntityTEUSmall((World)null), worldwidecontentpack.MODID, worldwidecontentpack.European);
 
     public EntityTEUSmall(UUID owner, World world, double xPos, double yPos, double zPos) {super(owner, world, xPos, yPos, zPos); }
 
@@ -49,7 +50,7 @@ public class EntityTEUSmall extends GenericRailTransport {
     }
 
     public void registerSkins() {
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freight/TEUSmallContainer/C12.png",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/freightskins/TEUSmallContainer/C12.png",
                 "WWCP Corperate Skin",
                 "Fictional skin promoting WWCP as a transport Company");
     }
@@ -123,7 +124,7 @@ public class EntityTEUSmall extends GenericRailTransport {
     }
 
     public int getInventoryRows() {
-        return 3;
+        return 21;
     }
 
     public TrainsInMotion.transportTypes getType() {

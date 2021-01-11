@@ -6,7 +6,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ebf.tim.TrainsInMotion.transportTypes;
 import ebf.tim.api.SkinRegistry;
 import ebf.tim.entities.EntityTrainCore;
-import ebf.tim.items.ItemTransport;
 import ebf.tim.registry.URIRegistry;
 import ebf.tim.utility.RailUtility;
 import fexcraft.tmt.slim.ModelBase;
@@ -20,7 +19,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import wwcp.models.locomotives.Class812;
+import wwcp.entities.EntityDataSets.Transport;
+import wwcp.entities.WWCPTransport;
+import wwcp.models.locomotives.steamers.Class812;
 import wwcp.worldwidecontentpack;
 
 public class EntityClass812 extends EntityTrainCore {
@@ -29,52 +30,57 @@ public class EntityClass812 extends EntityTrainCore {
         super(owner, world, xPos, yPos, zPos);
     }
 
-    public static final Item thisItem = new ItemTransport(new EntityClass812(null), worldwidecontentpack.MODID, worldwidecontentpack.United_Kingdom);
+    public static final Item thisItem = new WWCPTransport(new EntityClass812(null), worldwidecontentpack.MODID, worldwidecontentpack.United_Kingdom);
 
     public EntityClass812(World world) {
         super(world);
     }
 
-    public String transportName() {
-        return "Class 812";
-    }
+    @Override
+    public String transportName() { return Transport.CR812().name; }
 
-    public String transportcountry() {
-        return "United Kingdom";
-    }
+    @Override
+    public String transportcountry() { return Transport.CR812().country; }
 
-    public String transportYear() {
-        return "1899–1909";
-    }
+    @Override
+    public String transportYear() { return Transport.CR812().year; }
 
+    @Override
     public String transportFuelType() {
-        return "Steam";
+        return Transport.CR812().fuel;
     }
-
+    @Override
     public boolean isFictional() {
-        return false;
+        return Transport.CR812().fictional;
+    }
+    @Override
+    public float transportTractiveEffort() {
+        return Transport.CR812().tractive_effort;
+    }
+    @Override
+    public float transportMetricHorsePower() {
+        return Transport.CR812().metric_horsepower;
+    }
+    @Override
+    public float weightKg() {
+        return  Transport.CR812().weightinKGs;
     }
 
-    public float transportTractiveEffort() { return 20170F; }
-
-    public float weightKg() { return 46380F; }
-
-    public float transportMetricHorsePower() {
-        return 75.0F;
+    public boolean isReinforced() {
+        return Transport.CR812().reinforced;
     }
 
     @Override
     public String[] additionalItemText() {
-        return new String[]{RailUtility.translate("wwcp.era") + " II-III",
-                RailUtility.translate("wwcp.nick") + " Jumbos"};
+        {return new String[]{RailUtility.translate(Transport.CR812().additionalTextTitle) + Transport.CR812().additionalText,
+                RailUtility.translate(Transport.CR812().additionalTextTitle2) + Transport.CR812().additionalText2};}
     }
 
-    public float transportTopSpeed() {
-        return 88.9F;
-    }
+    @Override
+    public float transportTopSpeed(){return accelerator<0? Transport.CR812().backTopSpeed: Transport.CR812().topSpeed;}
 
     public void registerSkins() {
-        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/locomotive/Steam/812/C1.png", "default",
+        SkinRegistry.addSkin(this.getClass(), worldwidecontentpack.MODID, "textures/locomotive/Steam/C812/C1.png", "default",
                 "Used by Germany in WWI as a transport for solders and equipment");
 
     }
@@ -135,11 +141,7 @@ public class EntityClass812 extends EntityTrainCore {
     public boolean shouldRiderSit() {
         return false;
     }
-
-    public boolean isReinforced() {
-        return false;
-    }
-
+    
     public int[] getTankCapacity() {
         return new int[]{9161, 800};
     }
